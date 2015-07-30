@@ -45,6 +45,11 @@ class Ui_MapsheetDownload(object):
         self.downloadTopo250k = QtGui.QCheckBox(self.group_250k)
         self.downloadTopo250k.setGeometry(QtCore.QRect(0, 60, 200, 20))
         self.downloadTopo250k.setObjectName(_fromUtf8("downloadTopo250k"))
+
+        self.downloadCanVec_plus = QtGui.QCheckBox(self.group_250k)
+        self.downloadCanVec_plus.setGeometry(QtCore.QRect(0, 80, 200, 20))
+        self.downloadCanVec_plus.setObjectName(_fromUtf8("downloadCanVec_plus"))        
+        
         self.label_250k = QtGui.QLabel(MapsheetDownload)
         self.label_250k.setGeometry(QtCore.QRect(280, 13, 250, 20))
         self.label_250k.setObjectName(_fromUtf8("label_250k"))
@@ -110,6 +115,9 @@ class Ui_MapsheetDownload(object):
         self.downloadNTDB250k.setText(QtGui.QApplication.translate("MapsheetDownload", "NTDB Vector Data", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadDEM250k.setText(QtGui.QApplication.translate("MapsheetDownload", "DEM Raster Data", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadTopo250k.setText(QtGui.QApplication.translate("MapsheetDownload", "Topographic Raster Maps", None, QtGui.QApplication.UnicodeUTF8))
+
+        self.downloadCanVec_plus.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec Plus Vector Data", None, QtGui.QApplication.UnicodeUTF8))        
+        
         self.label_250k.setText(QtGui.QApplication.translate("MapsheetDownload", "250k Mapsheets to Download", None, QtGui.QApplication.UnicodeUTF8))
         self.group_50k.setTitle(QtGui.QApplication.translate("MapsheetDownload", "1:50000 NTS Datasets to Download", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadCanVec.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec Vector Data", None, QtGui.QApplication.UnicodeUTF8))
