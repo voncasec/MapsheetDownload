@@ -94,7 +94,7 @@ class Ui_MapsheetDownload(object):
         self.addMapLayers.setSizePolicy(sizePolicy)
         self.addMapLayers.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.addMapLayers.setAutoFillBackground(False)
-        self.addMapLayers.setChecked(True)
+        self.addMapLayers.setChecked(False)
         self.addMapLayers.setObjectName(_fromUtf8("addMapLayers"))
 
         self.retranslateUi(MapsheetDownload)
