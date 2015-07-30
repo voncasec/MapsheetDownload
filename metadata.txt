@@ -11,7 +11,7 @@
 [general]
 name=NTS Data Download
 qgisMinimumVersion=1.8
-qgisMaximumVersion=2.9
+qgisMaximumVersion=2.10
 description=Download CanVec, NTDB, DEM, Topo data for Canada
 version=0.1
 author=Casey Vandenberg / SJ Geophysics
