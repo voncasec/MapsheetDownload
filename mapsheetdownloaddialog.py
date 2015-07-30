@@ -75,7 +75,7 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         self.outputDir.setText(outputDir)
         
     def getFlags(self):
-        downloadFlags = [self.downloadCanVec.isChecked(),self.downloadNTDB50k.isChecked(),self.downloadDEM50k.isChecked(),self.downloadTopo50k.isChecked(),self.downloadNTDB250k.isChecked(),self.downloadDEM250k.isChecked(),self.downloadTopo250k.isChecked()]
+        downloadFlags = [self.downloadCanVec.isChecked(),self.downloadNTDB50k.isChecked(),self.downloadDEM50k.isChecked(),self.downloadTopo50k.isChecked(),self.downloadNTDB250k.isChecked(),self.downloadDEM250k.isChecked(),self.downloadTopo250k.isChecked(),self.downloadCanVec_plus.isChecked()]
         return downloadFlags
 
     def countDownloadFiles(self):
@@ -163,6 +163,43 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         if os.path.exists(zipFileName):
             zipF = zipfile.ZipFile(zipFileName)
             zipF.extractall(d)
+
+    def dlCanVec_plus(self,DestinationDirectory,NTS_250k_Sheet):
+        """
+        Creates CanVec+ Sub Directory if it does not already exist.
+        Retrieves the ftp file using the FTPHOST global variable and ftpPath
+        Downloads the NTS 50k CanVec+ ftpFile from ftp://ftp2.cits.rncan.gc.ca/pub/canvec+/shp/
+        Extracts the data to the NTS_250k_Sheet subdirectory 
+
+        FTPHOST = 'ftp2.cits.rncan.gc.ca'
+        ftpPath = 'pub/canvec+/shp/'
+        """
+        ftpPath = 'pub/canvec+/shp/'
+        series250k,mapArea250k = parse250kSheets(NTS_250k_Sheet)
+
+        cwd=os.getcwd()
+
+        d = os.path.join(DestinationDirectory,'CanVec+',NTS_250k_Sheet)
+        downloadDir=str(os.path.join(DestinationDirectory,'CanVec+'))
+        outfile=os.path.join(downloadDir,'canvec_'+str.upper(NTS_250k_Sheet)+'_shp.zip')
+
+        if not os.path.exists(d):
+            os.makedirs(d)
+        if os.path.exists(outfile):
+            self.Status.appendPlainText('CanVec Plus Mapsheet '+str(NTS_250k_Sheet)+str(' already retrieved from FTP site'))
+        else:
+            os.chdir(downloadDir)
+            ftpFile = 'retr '+ftpPath+series250k+'/'+'canvec_'+str.upper(NTS_250k_Sheet)+'_shp.zip'
+            self.Status.appendPlainText(str(ftpFile))
+            ftp = FTP(FTPHOST)
+            ftp.login()
+            ftp.retrbinary(ftpFile,open(outfile, 'wb').write)
+        os.chdir(cwd)
+        zipFileName = os.path.join(downloadDir,'canvec_'+str.upper(NTS_250k_Sheet)+'_shp.zip')
+
+        if os.path.exists(zipFileName):
+            zipF = zipfile.ZipFile(zipFileName)
+            zipF.extractall(d)          
 
     def dlNTDB50k(self,DestinationDirectory,NTS_50k_Sheet):
         """
@@ -456,7 +493,12 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
                 time.sleep(0.02)
                 self.dlTopo250k(DestinationDirectory,NTS_250k_Sheet)
                 self.update_progress_bar()
-
+            if downloadFlags[7]:
+                self.Status.appendPlainText(str('Downloading 1:50k CanVec + Data'))
+                time.sleep(0.02)
+                self.dlCanVec_plus(DestinationDirectory,NTS_250k_Sheet)
+                self.update_progress_bar()
+                
         if True in downloadFlags:
             print "\nDownload Complete\n"
         else:
@@ -527,6 +569,14 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
                     for filename in filenames:
                         TopoFilePath = os.path.join(dirname, filename)
                         addTopoToCanvas(TopoFilePath)
+            if downloadFlags[7]:
+                d = os.path.join(DestinationDirectory,'CanVec+',NTS_250k_Sheet)
+                os.chdir(d)
+                for dirname, dirnames, filenames in os.walk(d):
+                    for filename in filenames:
+                        CanVec_plusFilePath = os.path.join(dirname, filename)
+                        addShapesToCanvas(CanVec_plusFilePath)
+
             if downloadFlags[4]:
                 d = os.path.join(DestinationDirectory,'NTDBData',NTS_250k_Sheet)
                 os.chdir(d)
@@ -577,6 +627,48 @@ def createThemeLists(NTS_50k_Sheet,DestinationDirectory):
             themes.add(Theme)
     return themes
 
+def createThemeLists250k(NTS_250k_Sheet,DestinationDirectory):
+    """
+    Iterates over all .shp in the NTS_50k_Sheet download directory and
+    creates a set of themes that are present which belong to the theme dictionary
+
+    The theme dictionary includes:
+    _______________________________
+    BS - Buildings and Structures
+    EN - Energy
+    FO - Relief and Landforms
+    HD - Hydrography
+    IC - Industrial and Commercial
+    LA - Adminstrative Limit
+    LI - Map Coverage Limit
+    LX - Places of Interest
+    SS - Water Saturated Soils
+    TO - Toponomy
+    TR - Transportation
+    VE - Vegetation
+
+    The themes can later be organized by feature type if desired (not yet implemented)
+    Feature Types:
+    0 - Point
+    1 - Line
+    2 - Area
+    _______________________________
+
+    Themes are defined here: ftp://ftp2.cits.rncan.gc.ca/pub/canvec/doc/CanVec_feature_catalogue_en.pdf
+    """
+    lowerCase250kMapSheet = str.lower(NTS_250k_Sheet)
+    d = os.path.join(DestinationDirectory,'CanVec+',NTS_250k_Sheet)
+    shpList = getShpList(d)[0]
+    shpHeadList = getShpList(d)[1]
+    themes = set()
+    for shpFile in shpHeadList:
+        Theme = shpFile.split('_')[0].upper()
+        if Theme not in THEME_DICT:
+            print '\nVector layer:',shpFile,'does not belong to a theme\n'
+        else:
+            themes.add(Theme)
+    return themes
+    
 def organizeByTheme(NTS_50k_Sheet,DestinationDirectory):
     """
     For each theme present that exists in the theme dictionary, a sub-directory
@@ -597,6 +689,35 @@ def organizeByTheme(NTS_50k_Sheet,DestinationDirectory):
             continue
         try:
             Theme = fileHead.split('_')[3]
+            if Theme not in THEME_DICT:
+                continue
+            dst=(os.path.join(downloadDir,THEME_DICT[Theme],fileName))
+            if os.path.exists(dst):
+                os.unlink(dst)
+            shutil.move(os.path.join(downloadDir,fileName),dst)
+        except KeyError, IndexError:
+            print "Exception", dst,fileHead,Theme
+
+def organizeByTheme250k(NTS_250k_Sheet,DestinationDirectory):
+    """
+    For each theme present that exists in the theme dictionary, a sub-directory
+    representing that themes value will be created if it does not already exist.
+    Each file that is part of that theme is then moved into the appropriate sub-directory
+    
+    Currently this function is done automatically. A flag to organize by theme may be created in the future.
+    """
+    themes = createThemeLists250k(NTS_250k_Sheet,DestinationDirectory)
+    downloadDir=str(os.path.join(DestinationDirectory,'CanVec+',NTS_250k_Sheet))
+    for Theme in themes:
+        d=os.path.join(DestinationDirectory,'CanVec+',NTS_250k_Sheet,THEME_DICT[Theme])
+        if not os.path.exists(d):
+            os.makedirs(d)        
+    for fileName in os.listdir(downloadDir):
+        fileHead = os.path.splitext(fileName)[0]
+        if fileName.endswith('.html') or fileName.endswith('.xml') or fileName.find('.')<0:
+            continue
+        try:
+            Theme = fileHead.split('_')[0].upper()
             if Theme not in THEME_DICT:
                 continue
             dst=(os.path.join(downloadDir,THEME_DICT[Theme],fileName))
