@@ -49,6 +49,7 @@ class Ui_MapsheetDownload(object):
         self.downloadCanVec_plus = QtGui.QCheckBox(self.group_250k)
         self.downloadCanVec_plus.setGeometry(QtCore.QRect(0, 80, 200, 20))
         self.downloadCanVec_plus.setObjectName(_fromUtf8("downloadCanVec_plus"))        
+        #self.downloadCanVec_plus.setChecked(False)
         
         self.label_250k = QtGui.QLabel(MapsheetDownload)
         self.label_250k.setGeometry(QtCore.QRect(280, 13, 250, 20))
@@ -56,11 +57,20 @@ class Ui_MapsheetDownload(object):
         self.group_50k = QtGui.QGroupBox(MapsheetDownload)
         self.group_50k.setGeometry(QtCore.QRect(10, 70, 250, 100))
         self.group_50k.setObjectName(_fromUtf8("group_50k"))
+
         self.downloadCanVec = QtGui.QCheckBox(self.group_50k)
         self.downloadCanVec.setGeometry(QtCore.QRect(0, 20, 200, 20))
         self.downloadCanVec.setToolTip(_fromUtf8(""))
-        self.downloadCanVec.setChecked(False)
+        #self.downloadCanVec.setChecked(False)
         self.downloadCanVec.setObjectName(_fromUtf8("downloadCanVec"))
+
+        #self.downloadCanVecNew = QtGui.QCheckBox(self.group_50k)
+        #self.downloadCanVecNew.setGeometry(QtCore.QRect(0, 20, 200, 20))
+        #self.downloadCanVecNew.setToolTip(_fromUtf8(""))
+        #self.downloadCanVecNew.setChecked(True)
+        #self.downloadCanVecNew.setObjectName(_fromUtf8("downloadCanVecNew"))
+
+
         self.downloadNTDB50k = QtGui.QCheckBox(self.group_50k)
         self.downloadNTDB50k.setGeometry(QtCore.QRect(0, 40, 200, 20))
         self.downloadNTDB50k.setObjectName(_fromUtf8("downloadNTDB50k"))
@@ -77,6 +87,9 @@ class Ui_MapsheetDownload(object):
         self.outputDir.setGeometry(QtCore.QRect(10, 180, 351, 30))
         self.outputDir.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.outputDir.setObjectName(_fromUtf8("outputDir"))
+        
+
+
         self.input250k = QtGui.QLineEdit(MapsheetDownload)
         self.input250k.setGeometry(QtCore.QRect(280, 35, 250, 30))
         self.input250k.setObjectName(_fromUtf8("input250k"))
@@ -116,11 +129,13 @@ class Ui_MapsheetDownload(object):
         self.downloadDEM250k.setText(QtGui.QApplication.translate("MapsheetDownload", "DEM Raster Data", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadTopo250k.setText(QtGui.QApplication.translate("MapsheetDownload", "Topographic Raster Maps", None, QtGui.QApplication.UnicodeUTF8))
 
-        self.downloadCanVec_plus.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec Plus Vector Data", None, QtGui.QApplication.UnicodeUTF8))        
+        self.downloadCanVec_plus.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec Plus Vector Data (Archived)", None, QtGui.QApplication.UnicodeUTF8))        
         
         self.label_250k.setText(QtGui.QApplication.translate("MapsheetDownload", "250k Mapsheets to Download", None, QtGui.QApplication.UnicodeUTF8))
         self.group_50k.setTitle(QtGui.QApplication.translate("MapsheetDownload", "1:50000 NTS Datasets to Download", None, QtGui.QApplication.UnicodeUTF8))
-        self.downloadCanVec.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec Vector Data", None, QtGui.QApplication.UnicodeUTF8))
+        self.downloadCanVec.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec Vector Data (Archived)", None, QtGui.QApplication.UnicodeUTF8))
+        #self.downloadCanVecNew.setText(QtGui.QApplication.translate("MapsheetDownload", "CanVec (Current)", None, QtGui.QApplication.UnicodeUTF8))
+        
         self.downloadNTDB50k.setText(QtGui.QApplication.translate("MapsheetDownload", "NTDB Vector Data", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadDEM50k.setText(QtGui.QApplication.translate("MapsheetDownload", "DEM Raster Data", None, QtGui.QApplication.UnicodeUTF8))
         self.downloadTopo50k.setText(QtGui.QApplication.translate("MapsheetDownload", "Topographic Raster Maps", None, QtGui.QApplication.UnicodeUTF8))
@@ -131,3 +146,7 @@ class Ui_MapsheetDownload(object):
         self.browserButton.setText(QtGui.QApplication.translate("MapsheetDownload", "Browse", None, QtGui.QApplication.UnicodeUTF8))
         self.addMapLayers.setText(QtGui.QApplication.translate("MapsheetDownload", "Add downloaded files into the layer tree", None, QtGui.QApplication.UnicodeUTF8))
 
+        #self.outputDir.setText(QtGui.QApplication.translate("MapsheetDownload", "C:\Users\cvandenberg\Desktop\NTS_Test", None, QtGui.QApplication.UnicodeUTF8))
+        #self.input250k.setText(QtGui.QApplication.translate("MapsheetDownload", "092h", None, QtGui.QApplication.UnicodeUTF8))
+        
+        

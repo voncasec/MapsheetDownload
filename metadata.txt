@@ -11,10 +11,11 @@
 [general]
 name=NTS Data Download
 qgisMinimumVersion=1.8
-qgisMaximumVersion=2.10
+qgisMaximumVersion=2.99
 description=Download CanVec, NTDB, DEM, Topo data for Canada
-version=0.2
-author=Casey Vandenberg / SJ Geophysics
+about=This plugin is a retrieval tool for downloading National Topographic System data for Canada from the NRCAN FTP site (ftp://ftp2.cits.rncan.gc.ca/pub/). The user selects which data sets they are interested in (DEM, vector base layers, georeferenced Topo map), which scale they want to download the data (1:50000 or 1:250000) and the NTS mapsheet name(s) (e.g. 092H12, 092I etc...), and the tool just pulls the data from the ftp site (which is organized by Mapsheet names), unzips and organizes the data.
+version=0.3
+author=Casey Vandenberg - SJ Geophysics
 email=casey.vandenberg@sjgeophysics.com
 
 # end of mandatory metadata
@@ -22,14 +23,17 @@ email=casey.vandenberg@sjgeophysics.com
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-# changelog=
+changelog=The following changes have been added
+    0.2 - Added Support for QGIS 2.10. Added CanVec+ download option
+    0.3 - CanVec and CanVec plus datasets that were organized according to their NTS MapSheet are considered deprecated. The FTP path has been repointed to this new archived location. 
+          A future update will provide a download option for the latest version of the CanVec data which are organized by theme for each province at various scales.
 
 # tags are comma separated with spaces allowed
-tags=
+tags=CanVec, NTDB, DEM, Topo
 
-homepage=
-tracker=
-repository=
+homepage=https://github.com/voncasec/
+tracker=https://github.com/voncasec/MapsheetDownload
+repository=https://github.com/voncasec/MapsheetDownload
 icon=icon.png
 # experimental flag
 experimental=False
