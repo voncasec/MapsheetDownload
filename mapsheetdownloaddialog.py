@@ -135,9 +135,9 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         Extracts the data to the NTS_50k_Sheet subdirectory 
 
         FTPHOST = 'ftp2.cits.rncan.gc.ca'
-        ftpPath = 'pub/canvec/50k_shp/'
+        ftpPath = 'pub/archive/canvec_archive_20130515/50k_shp/'
         """
-        ftpPath = 'pub/canvec/50k_shp/'
+        ftpPath = 'pub/canvec/archive/canvec_archive_20130515/50k_shp/'
         series50k,mapArea50k,sheet50k = parse50kSheets(NTS_50k_Sheet)
 
         cwd=os.getcwd()
@@ -145,7 +145,11 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         d = os.path.join(DestinationDirectory,'CanVecData',NTS_50k_Sheet)
         downloadDir=str(os.path.join(DestinationDirectory,'CanVecData'))
         outfile=os.path.join(downloadDir,'canvec_'+str.lower(NTS_50k_Sheet)+'_shp.zip')
-
+        
+        QgsMessageLog.logMessage("d: {0}".format(d),level=QgsMessageLog.CRITICAL)
+        QgsMessageLog.logMessage("downloadDir: {0}".format(downloadDir),level=QgsMessageLog.CRITICAL)
+        QgsMessageLog.logMessage("outfile: {0}".format(outfile),level=QgsMessageLog.CRITICAL)
+        
         if not os.path.exists(d):
             os.makedirs(d)
         if os.path.exists(outfile):
@@ -153,16 +157,19 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         else:
             os.chdir(downloadDir)
             ftpFile = 'retr '+ftpPath+series50k+'/'+str.lower(mapArea50k)+'/canvec_'+str.lower(NTS_50k_Sheet)+'_shp.zip'
+            QgsMessageLog.logMessage("ftpFile: {0}".format(ftpFile),level=QgsMessageLog.CRITICAL)
             self.Status.appendPlainText(str(ftpFile))
             ftp = FTP(FTPHOST)
             ftp.login()
             ftp.retrbinary(ftpFile,open(outfile, 'wb').write)
         os.chdir(cwd)
         zipFileName = os.path.join(downloadDir,'canvec_'+str.lower(NTS_50k_Sheet)+'_shp.zip')
+        QgsMessageLog.logMessage("zipFileName: {0}".format(zipFileName), level=QgsMessageLog.CRITICAL)
 
         if os.path.exists(zipFileName):
             zipF = zipfile.ZipFile(zipFileName)
             zipF.extractall(d)
+
 
     def dlCanVec_plus(self,DestinationDirectory,NTS_250k_Sheet):
         """
@@ -174,7 +181,7 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         FTPHOST = 'ftp2.cits.rncan.gc.ca'
         ftpPath = 'pub/canvec+/shp/'
         """
-        ftpPath = 'pub/canvec+/shp/'
+        ftpPath = 'pub/canvec/archive/canvec+_archive_20151029/shp/'
         series250k,mapArea250k = parse250kSheets(NTS_250k_Sheet)
 
         cwd=os.getcwd()
@@ -183,6 +190,10 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
         downloadDir=str(os.path.join(DestinationDirectory,'CanVec+'))
         outfile=os.path.join(downloadDir,'canvec_'+str.upper(NTS_250k_Sheet)+'_shp.zip')
 
+        QgsMessageLog.logMessage("d: {0}".format(d),level=QgsMessageLog.CRITICAL)
+        QgsMessageLog.logMessage("downloadDir: {0}".format(downloadDir),level=QgsMessageLog.CRITICAL)
+        QgsMessageLog.logMessage("outfile: {0}".format(outfile),level=QgsMessageLog.CRITICAL)
+        
         if not os.path.exists(d):
             os.makedirs(d)
         if os.path.exists(outfile):
@@ -196,7 +207,8 @@ class MapsheetDownload(QtGui.QDialog, Ui_MapsheetDownload):
             ftp.retrbinary(ftpFile,open(outfile, 'wb').write)
         os.chdir(cwd)
         zipFileName = os.path.join(downloadDir,'canvec_'+str.upper(NTS_250k_Sheet)+'_shp.zip')
-
+        QgsMessageLog.logMessage("zipFileName: {0}".format(zipFileName), level=QgsMessageLog.CRITICAL)
+        
         if os.path.exists(zipFileName):
             zipF = zipfile.ZipFile(zipFileName)
             zipF.extractall(d)          
